@@ -25,14 +25,16 @@ class Preprocessor
     
     # creaza threadurile si face mici prelucrari per fiecare link
     threads = []
+    results = []
     links_to_scan.each_with_index do |link,index|
       unless link.include? 'https'
         threads << Thread.new do 
           doc_child = Nokogiri::HTML(open(link))
           File.open("data/data_#{index}_#{@search_item}.txt", 'w') do |f|
             doc_child.css('h1').each do |node|
-              f.write("Thread #{index} \n" )
-              f.write(node.text + " \n" )
+              results << { 'Thread #{index}' => node.text }
+              #f.write("Thread #{index} \n" )
+              #f.write(node.text + " \n" )
             end
           end
         end
