@@ -1,2 +1,0 @@
-Thread 3
-JavaScript.com: The Definitive JavaScript Resource 

@@ -1,4 +1,0 @@
-Thread 8
-Watir 
-Thread 8
-Automated testing that doesn’t hurt 

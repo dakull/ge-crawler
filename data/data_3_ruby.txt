@@ -1,2 +1,0 @@
-Thread 3
-Ruby 
