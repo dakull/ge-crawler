@@ -16,7 +16,7 @@ beginning_time = Time.now
   end
   
   # wait to finish
-  Process.wait
+  Process.wait(0)
 
 end_time = Time.now
 puts "Timpul rularii #{(end_time - beginning_time)} sec"

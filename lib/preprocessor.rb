@@ -20,6 +20,7 @@ class Preprocessor
   
     def start_preprocessor
       # dc exista dja in queue
+      # fix that error
       ActiveRecord::Base.connection.reconnect!
       if Job.where('name = ? AND status = ?', $search_item, 1).exists? then
         return -1
@@ -43,10 +44,12 @@ class Preprocessor
         unless link.include? 'https'
           threads << Thread.new do 
             doc_child = Nokogiri::HTML(open(link))
-              doc_child.css('h1').each do |node|
-                #results << { "Thread #{index}" => node.text }
-                results[index] = node.text
-              end
+            unless doc_child.at_css('h1') == nil then
+              results[index] = doc_child.at_css('h1').text.strip
+            end
+            #doc_child.css('h1').each do |node|
+            #  results[index] = node.text
+            #end
           end
         end
       end 
@@ -56,7 +59,7 @@ class Preprocessor
         thread.join
       end
       
-      # jobul este gata
+      # jobul este gata save the data
       job.status = 1
       job.result = results
       job.save

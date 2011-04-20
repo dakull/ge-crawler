@@ -11,7 +11,7 @@ end
 
 # seed
 
-['ruby','event-machine','kittens'].each do |itm|
+['ruby','event-machine','kittens','monad','monkey'].each do |itm|
   buff = Job.new
   buff.name = itm
   buff.status = 0
