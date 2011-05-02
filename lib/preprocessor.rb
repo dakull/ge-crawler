@@ -4,8 +4,11 @@
 #
 require 'open-uri'
 require 'nokogiri'
+require 'uriio'
 
 class Preprocessor
+  
+  include UriIO
   
   attr_accessor :uri_address, :search_item, :results 
   
@@ -19,7 +22,7 @@ class Preprocessor
   private
   
     def start_preprocessor
-      # dc exista dja in queue
+      # dc exista deja in queue
       # fix that error
       ActiveRecord::Base.connection.reconnect!
       if Job.where('name = ? AND status = ?', $search_item, 1).exists? then
@@ -29,30 +32,38 @@ class Preprocessor
       # jobul a inceput
       job = Job.find_by_name(@search_item)
       
-      # foloseste nokogiri
-      doc = Nokogiri::HTML(open(@uri_address+@search_item))
+      doc = get_uri(@uri_address+@search_item)
       # afiseaza titlul rezultatelor si href-urile ce vor fi procesate cu threaduri
       links_to_scan = []
       doc.css('h3.r > a.l').each do |link|
         links_to_scan << link['href']
+        # puts link['href']
       end
-      
+
       # creaza threadurile si face mici prelucrari per fiecare link
       threads = []
       results = []
+      
       links_to_scan.each_with_index do |link,index|
         unless link.include? 'https'
-          threads << Thread.new do 
-            doc_child = Nokogiri::HTML(open(link))
+          threads << Thread.new do
+            puts "|--> " + link
+            doc_child = get_uri(link)
             unless doc_child.at_css('h1') == nil then
               results[index] = doc_child.at_css('h1').text.strip
+              puts " -->" + doc_child.at_css('h1').text.strip
+          
+              related_links = doc_child.xpath('//a[contains(text(), "'+@search_item+'")]')
+              puts "  --> nr linkuri : " + related_links.count.to_s
+              
+              related_links.css('a').each do |inner_link|
+                puts "   --> " + inner_link.content
+              end
+              
             end
-            #doc_child.css('h1').each do |node|
-            #  results[index] = node.text
-            #end
           end
         end
-      end 
+      end
       
       # join
       threads.each do |thread|
@@ -60,7 +71,8 @@ class Preprocessor
       end
       
       # jobul este gata save the data
-      job.status = 1
+      # ATENTIE !
+      # job.status = 1
       job.result = results
       job.save
     end
