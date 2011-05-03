@@ -7,16 +7,30 @@ require 'nokogiri'
 require 'loofah'
 require 'uriio'
 require 'chromosome'
+require 'scanner'
 
 class Preprocessor
   
   include UriIO
   
-  attr_accessor :uri_address, :search_item, :results 
-  
   def initialize( search_item = "monad" )
-    @uri_address = "http://google.com/search?q="
-    @uri_address_bing = "http://www.bing.com/search?q="
+    
+    @scanners = []
+    
+    buff = Scanner.new
+    buff.uri_address = "http://google.com/search?q="
+    buff.search_items = search_item
+    buff.page = ""
+    buff.selector = "h3.r > a.l"
+    @scanners << buff
+    
+    buff = Scanner.new
+    buff.uri_address = "http://www.bing.com/search?q="
+    buff.search_items = search_item
+    buff.page = ""
+    buff.selector = "h3 > a"    
+    @scanners << buff
+    
     @search_item = search_item
     # start
     start_preprocessor
@@ -31,32 +45,21 @@ class Preprocessor
       if Job.where('name = ? AND status = ?', $search_item, 1).exists? then
         return -1
       end
-      
-      # jobul a inceput
-      job = Job.find_by_name(@search_item)
-      
-      doc = get_uri(@uri_address+@search_item)
-      # preia primele pagini
-      links_to_scan_google = []
-      
-      # google
-      doc.css('h3.r > a.l').each do |link|
-        links_to_scan_google << link['href']
-      end
-      
-      
-      links_to_scan_bing = []
-      # bing
-      doc = get_uri(@uri_address_bing+@search_item)
-      doc.css('h3 > a').each do |link|
-        links_to_scan_bing << link['href']
-      end
-      
-      # linkuri de scanat
+            
+      # preia din scanners
       links_to_scan = []
-      # union
-      links_to_scan = links_to_scan_google | links_to_scan_bing
+      puts "test #{@scanners.count}"
       
+      @scanners.each do |scanner|
+        doc = get_uri(scanner.first_search)
+        doc.css(scanner.selector).each do |link|
+          links_to_scan << link['href']
+        end
+      end
+
+      # fara duplicate
+      links_to_scan.uniq!
+        
       # threads = []
       results = []
       
@@ -105,6 +108,8 @@ class Preprocessor
       # end
       
       # jobul este gata save the data
+      # jobul a inceput
+      job = Job.find_by_name(@search_item)      
       # ATENTIE !
       # job.status = 1
       job.result = results
