@@ -6,6 +6,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'loofah'
 require 'uriio'
+require 'chromosome'
 
 class Preprocessor
   
@@ -15,6 +16,7 @@ class Preprocessor
   
   def initialize( search_item = "monad" )
     @uri_address = "http://google.com/search?q="
+    @uri_address_bing = "http://www.bing.com/search?q="
     @search_item = search_item
     # start
     start_preprocessor
@@ -35,10 +37,25 @@ class Preprocessor
       
       doc = get_uri(@uri_address+@search_item)
       # preia primele pagini
-      links_to_scan = []
+      links_to_scan_google = []
+      
+      # google
       doc.css('h3.r > a.l').each do |link|
-        links_to_scan << link['href']
+        links_to_scan_google << link['href']
       end
+      
+      
+      links_to_scan_bing = []
+      # bing
+      doc = get_uri(@uri_address_bing+@search_item)
+      doc.css('h3 > a').each do |link|
+        links_to_scan_bing << link['href']
+      end
+      
+      # linkuri de scanat
+      links_to_scan = []
+      # union
+      links_to_scan = links_to_scan_google | links_to_scan_bing
       
       # threads = []
       results = []
@@ -61,8 +78,25 @@ class Preprocessor
               page_quality = page_quality + no_of_occurences
             end
             puts "   --> ** Page Quality : " + page_quality.to_s
+            
+            # creeaza cromozomul
+            c = Chromosome.new
+            c.uri = link
+            c.page_quality = page_quality
+            c.content = doc_child
+            c.relevant_links = related_links
+            c.links = doc_child.xpath('count(//a)')
+            results << c
           #end
         end
+      end
+      
+      results.sort! do |a,b|
+        a.page_quality <=> b.page_quality
+      end
+      
+      results.each do |res|
+        puts "#{res.page_quality} | LINK: #{res.uri}"
       end
       
       # join
