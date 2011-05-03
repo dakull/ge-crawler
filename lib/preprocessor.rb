@@ -1,7 +1,3 @@
-#
-# Clasa pentru links stuff
-# si procesarea acestora
-#
 require 'open-uri'
 require 'nokogiri'
 require 'loofah'
@@ -18,16 +14,16 @@ class Preprocessor
     @scanners = []
     
     buff = Scanner.new
-    buff.uri_address = "http://google.com/search?q="
     buff.search_items = search_item
-    buff.page = ""
+    buff.uri_address = "http://google.com/search?q="
+    buff.page = "&start=10"
     buff.selector = "h3.r > a.l"
     @scanners << buff
     
     buff = Scanner.new
-    buff.uri_address = "http://www.bing.com/search?q="
     buff.search_items = search_item
-    buff.page = ""
+    buff.uri_address = "http://www.bing.com/search?q="
+    buff.page = "first=11"
     buff.selector = "h3 > a"    
     @scanners << buff
     

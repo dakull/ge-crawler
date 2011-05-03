@@ -1,6 +1,6 @@
 class GeneticAlgorithm
   
-  attr_accessor :search_terms, :iteration
+  attr_accessor :search_terms, :iterations
   
   
   
