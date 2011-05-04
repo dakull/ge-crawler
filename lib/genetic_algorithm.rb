@@ -1,40 +1,19 @@
-module GA
+require 'preprocessor'
 
-  class GeneticAlgorithm
-    
-    attr_accessor :search_terms, :iterations, :algorithm
-    
-    def initialize(iterations,algorithm)
-      @iterations = iterations
-      @algorithm = algorithm
-    end
-    
-    def run_algorithm
-      @algorithm.call(self)
-    end
-    
+class GeneticAlgorithm
+  
+  attr_accessor :search_terms, :iterations, :algorithm, :result, :current_pop, :prev_pop, :probability_of_crossover
+  
+  def initialize(search_terms,iterations,&algorithm)
+    @search_terms = search_terms
+    @iterations = iterations
+    @algorithm = algorithm
   end
-
-  # testing grounds : 
-  def test_run
-    ge_mark_i = Proc.new { |context|
-      for i in 1..context.iterations do
-        puts i
-      end
-    }
-    
-    buff = GeneticAlgorithm.new 40, ge_mark_i
-    buff.iterations = 40
-    buff.run_algorithm
+  
+  def run_algorithm
+    @algorithm.call(self)
   end
   
 end
 
-
-class Test
-  include GA
-end
-
-Test.new.test_run
-
-# end module GA  
+# end GeneticAlgorithm  
