@@ -4,7 +4,6 @@ module OpenUriBroken; end
 [Errno::EINVAL, Errno::ECONNRESET,EOFError, Errno::ETIMEDOUT, Errno::ECONNREFUSED,OpenURI::HTTPError ].each {|m| m.send(:include, OpenUriBroken) }
 
 module UriIO
-  
   def get_uri(uri_link)
     begin
       Nokogiri::HTML(open(uri_link))
@@ -12,5 +11,4 @@ module UriIO
       nil  
     end
   end
-  
 end

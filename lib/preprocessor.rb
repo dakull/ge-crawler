@@ -77,7 +77,7 @@ class Preprocessor
               puts "   --> " + inner_link.content
               buff = get_uri(link)
               no_of_occurences = buff.xpath('count(//*[contains(text(), "'+@search_item+'")])').to_i
-              puts "   --> NR de Aparente : " + no_of_occurences.to_s
+              puts "   --> NO of app : " + no_of_occurences.to_s
               page_quality = page_quality + no_of_occurences
             end
             puts "   --> ** Page Quality : " + page_quality.to_s
