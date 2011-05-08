@@ -11,7 +11,7 @@ beginning_time = Time.now
 
   jobs = Job.find_all_by_status(0)
   jobs.each do |job,index|
-    ga_buff = GeneticAlgorithm.new job.name, 2, &ge_mark_i
+    ga_buff = GeneticAlgorithm.new job.name, 10, &ge_mark_i
     ga_buff.probability_of_crossover = 0.7
     ga_buff.run_algorithm
   end

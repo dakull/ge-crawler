@@ -9,7 +9,9 @@ class Preprocessor
   
   include UriIO
   
-  def initialize( search_item = "monad", iteration = 1 )
+  def initialize( search_item = "monad", iteration = 1, pop_size = 10 )
+    
+    @pop_size = pop_size
     
     @scanners = []
     
@@ -50,6 +52,7 @@ class Preprocessor
     links_to_scan = []
     
     @scanners.each do |scanner|
+      puts "*** SEARCH URI: #{scanner.get_results}"
       doc = get_uri(scanner.get_results)
       doc.css(scanner.selector).each do |link|
         links_to_scan << link['href']
@@ -58,13 +61,16 @@ class Preprocessor
 
     # fara duplicate
     links_to_scan.uniq!
+    
+    # for keeping the pop_size
+    # links_to_scan = links_to_scan.first @pop_size
       
     # threads = []
     results = []
     
     links_to_scan.each_with_index do |link,index|
     page_quality = 0
-    unless link.include? 'https'
+    unless link.include?('https') || link.include?('mailto')
       #threads << Thread.new do
         puts "|--> " + link
         doc_child = get_uri(link)

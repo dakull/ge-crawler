@@ -1,44 +1,66 @@
-# :search_terms, :iterations, :algorithm, :result, :current_pop, :prev_pop, :probability_of_crossover
-# Prima varianta de algoritm : 
-
+# CONTEXT :search_terms, :iterations, :algorithm, :result, :current_pop, :prev_pop, :probability_of_crossover
+# Algorithm 1st version GE_MARK_I : 
 def ge_mark_i
   lambda do |context|
     for i in 1..context.iterations do
       # heuristic creation 
-      prep = Preprocessor.new context.search_terms, i
-      population = prep.start_preprocessor
+      prep = Preprocessor.new context.search_terms, i, 10
+      population = prep.start_preprocessor      
            
       if i == 1 
-        population = population.last 5
         context.prev_pop = population
       else
         # selection
         population = context.prev_pop | population
         
-        # crossover ?
-        offspring = nil
-        if rand < context.probability_of_crossover
-          parents = population.first 2          
-          offspring = Postrocessor.new parents[0], parents[1], context.search_terms
+        # crossover part start here
+        # each individual can be selected for crossover
+        # if the probability is high enough
+        selected_offsprings = []
+        population.each do |individual|
+          if rand < context.probability_of_crossover
+            selected_offsprings << individual
+          end
         end
-        unless offspring == nil
-          population << offspring
+        
+        # if odd remove one so we have an even number of parents
+        unless selected_offsprings.count % 2 == 0
+          selected_offsprings = selected_offsprings.drop 1
+        end
+        
+        # offsprings are being made here   
+        offspring, prev_individual, buff  = nil, nil, 0
+        selected_offsprings.each do |individual|
+          buff += 1
+          prev_individual = individual
+          if buff == 2 
+            pp = Postrocessor.new(prev_individual, individual, context.search_terms)
+            offspring = pp.gen_offspring
+            unless offspring == nil
+              population << offspring
+            end
+            buff = 0
+            individual = nil
+          end
         end
         # end crossover
         
-        # sort
+        # sort the array of individuals
         population.sort! do |a,b|
           a.page_quality <=> b.page_quality
-        end        
+        end
         
-        context.prev_pop = population
+        context.prev_pop = population.last 10
       end
       
+      population = population.last 10
       population.each do |res|
         puts "#{res.page_quality} | LINK: #{res.uri}"
       end
       
+      puts "----------------------------------------------------------------------"
       puts "Population no #{i} Quality : #{(population.first.page_quality + population.last.page_quality)/2}"
+      puts "----------------------------------------------------------------------"
     end
   end
 end
