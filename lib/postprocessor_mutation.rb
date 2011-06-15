@@ -1,6 +1,5 @@
 require 'open-uri'
 require 'nokogiri'
-#require 'loofah'
 require 'uriio'
 require 'chromosome'
 require 'scanner'

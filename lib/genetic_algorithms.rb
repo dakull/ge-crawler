@@ -64,6 +64,15 @@ def ge_mark_i
         context.prev_pop = population.last 10
       end
       
+      # uniq again
+      population = population.inject([]) do |hash,item|
+        flag = false
+        hash.each { |hash_item| flag = (hash_item.uri == item.uri) ? true : false }
+        hash << item unless flag
+        hash
+      end
+      
+      # sort and limit at 10
       population = population.last 10
       population.each do |res|
         puts "#{res.page_quality} | LINK: #{res.uri}"
