@@ -18,8 +18,19 @@ def ge_mark_i
         # if the probability is high enough
         selected_offsprings = []
         population.each do |individual|
+          # select for crossover
           if rand < context.probability_of_crossover
             selected_offsprings << individual
+          end
+          # select and mutate
+          rand = 10 # remove this
+          if rand < context.probability_of_mutation
+            puts "Making mutation in link"
+            random_link = individual.all_links[rand(individual.all_links.length)]
+            mutated_link = PostrocessorMutation.new random_link
+            unless offspring == nil
+              population << mutated_link
+            end
           end
         end
         
@@ -56,11 +67,14 @@ def ge_mark_i
       population = population.last 10
       population.each do |res|
         puts "#{res.page_quality} | LINK: #{res.uri}"
+        context.result << { "pq" => res.page_quality, "link" => res.uri }
       end
       
       puts "----------------------------------------------------------------------"
       puts "Population no #{i} Quality : #{(population.first.page_quality + population.last.page_quality)/2}"
       puts "----------------------------------------------------------------------"
+      
+      context.result_pop << {"pop_no" => i, "pop_q" => (population.first.page_quality + population.last.page_quality)/2}
     end
   end
 end

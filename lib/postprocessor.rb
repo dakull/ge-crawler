@@ -60,7 +60,6 @@ class Postrocessor
       #                  le_links_second_parent[cut_point-1,le_links_second_parent.count-1]
       combined_links = le_links_first_parent | le_links_second_parent
       
-      
       link_uri = nil
       #times = 0
       #while times < combined_links.count || link_uri == nil || link_uri.include?('https') || link_uri.include?('mailto')

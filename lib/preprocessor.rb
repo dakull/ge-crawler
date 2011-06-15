@@ -11,8 +11,7 @@ class Preprocessor
   
   def initialize( search_item = "monad", iteration = 1, pop_size = 10 )
     
-    @pop_size = pop_size
-    
+    @pop_size = pop_size    
     @scanners = []
     
     # scanners start
@@ -65,13 +64,13 @@ class Preprocessor
     # for keeping the pop_size
     # links_to_scan = links_to_scan.first @pop_size
       
-    # threads = []
+    threads = []
     results = []
     
     links_to_scan.each_with_index do |link,index|
     page_quality = 0
     unless link.include?('https') || link.include?('mailto')
-      #threads << Thread.new do
+      threads << Thread.new do
         puts "|--> " + link
         doc_child = get_uri(link)
         
@@ -95,9 +94,10 @@ class Preprocessor
             c.content = doc_child
             c.relevant_links = related_links
             c.links = doc_child.xpath('count(//a)')
+            c.all_links = doc_child.xpath('//a')
             results << c
           end
-        #end
+        end
       end
     end
     
@@ -110,9 +110,9 @@ class Preprocessor
     #end
       
     # join
-    # threads.each do |thread|
-    #   thread.join
-    # end
+    threads.each do |thread|
+      thread.join
+    end
     
     # jobul este gata save the data
     # jobul a inceput
