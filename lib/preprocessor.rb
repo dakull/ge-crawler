@@ -25,6 +25,7 @@ class Preprocessor
     @scanners.each do |scanner|
       puts "*** SEARCH URI: #{scanner.get_results}"
       doc = get_uri(scanner.get_results)
+      
       doc.css(scanner.selector).each do |link|
         links_to_scan << link['href']
       end
@@ -39,27 +40,16 @@ class Preprocessor
     threads = []
     results = []
     
-    links_to_scan.each_with_index do |link,index|      
-      page_quality = 0
-      threads << Thread.new do
+    links_to_scan.each_with_index do |link,index|
+
+      threads << Thread.new(link) do |url|
         begin
-          assert(get_uri(link))
-          doc_child = get_uri(link)
+          assert(get_uri(url))
+          # print  "Fetching:  #{url}\n"
+          doc_child = get_uri(url)
           link_host = get_uri_host link
           related_links = doc_child.xpath('//a[contains(text(), "'+@search_item+'")]')
-          
-          related_links.each do |inner_link|
-            begin
-              inner_link_href = inner_link['href']
-              assert(get_uri(inner_link_href))
-              related_links_page = get_uri(inner_link_href)            
-              no_of_occurences = inner_link_href.include?(link_host) ? 1 : related_links_page.xpath('count(//*[contains(text(), "'+@search_item+'")])').to_i
-              page_quality = page_quality + no_of_occurences
-            rescue Exception => error
-              log_exception false, true
-            end
-          end
-          
+          page_quality = gen_page_quality(related_links,link_host)
         rescue Exception => error
           log_exception false, true
         else
@@ -107,6 +97,31 @@ class Preprocessor
     # job.save
   end
   
+  def gen_page_quality(related_links,link_host)
+    threads_childs = []
+    page_quality = 0
+    related_links.each do |inner_link|
+      threads_childs << Thread.new(inner_link) do |inner_link|
+        begin
+          #print  "Link:  #{inner_link['href']}\n"
+          inner_link_href = inner_link['href']
+          assert(get_uri(inner_link_href))
+          related_links_page = get_uri(inner_link_href)            
+          no_of_occurences = inner_link_href.include?(link_host) ? 1 : related_links_page.xpath('count(//*[contains(text(), "'+@search_item+'")])').to_i
+          #print  "Occ:  #{no_of_occurences}\n"
+          page_quality = page_quality + no_of_occurences
+        rescue Exception => error
+          log_exception false, true
+        end
+      end
+    end
+    # threads_childs join
+    threads_childs.each do |thread|
+      thread.join
+    end    
+    page_quality
+  end
+  
   def assert(value, message="Assertion failed")
     raise Exception, message, caller unless value
   end
@@ -126,6 +141,7 @@ class Preprocessor
     buff = Scanner.new
     buff.search_items = @search_item
     buff.uri_address = "http://www.bing.com/search?q="
+    
     buff.page_algorithm = Proc.new do |context|
       "&first=#{context.iteration*@pop_size+1}"
     end
