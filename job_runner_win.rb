@@ -23,7 +23,7 @@ beginning_time = Time.now
 
   jobs = Database::Job.find_all_by_status(0)
   jobs.each do |job,index|
-    ga_buff = GeneticAlgorithm.new job.name, 3, &ge_mark_i
+    ga_buff = GeneticAlgorithm.new job.name, 4, &ge_mark_i
     ga_buff.probability_of_crossover = 0.5
     ga_buff.probability_of_mutation = 0.2
     ga_buff.run_algorithm

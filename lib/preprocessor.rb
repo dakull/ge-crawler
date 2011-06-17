@@ -11,7 +11,7 @@ class Preprocessor
   include CustomLogger
   
   def initialize( search_item = "none", iteration = 1, pop_size = 10 )
-    @pop_size = pop_size    
+    @pop_size = pop_size
     @search_item = search_item
     @iteration = iteration
     self.gen_scanners
@@ -43,16 +43,14 @@ class Preprocessor
     links_to_scan.each_with_index do |link,index|
 
       threads << Thread.new(link) do |url|
-        begin
-          assert(get_uri(url))
-          # print  "Fetching:  #{url}\n"
-          doc_child = get_uri(url)
+        buff_page = get_uri(url)
+        if buff_page
+          doc_child = buff_page
           link_host = get_uri_host link
           related_links = doc_child.xpath('//a[contains(text(), "'+@search_item+'")]')
+          # page quality
           page_quality = gen_page_quality(related_links,link_host)
-        rescue Exception => error
-          log_exception false, true
-        else
+          # add chromosome
           c = Chromosome.new
           c.uri = link
           c.page_quality = page_quality
@@ -63,6 +61,7 @@ class Preprocessor
           results << c
         end
       end
+      
     end
     
     results.sort! do |a,b|
@@ -76,7 +75,7 @@ class Preprocessor
     
     # some info
     results.each do |res|
-      puts "#{res.page_quality} | LINK: #{res.uri}"
+      puts "| IPQ: #{res.page_quality} | LINK: #{res.uri}"
     end
     
     results
@@ -102,16 +101,12 @@ class Preprocessor
     page_quality = 0
     related_links.each do |inner_link|
       threads_childs << Thread.new(inner_link) do |inner_link|
-        begin
-          #print  "Link:  #{inner_link['href']}\n"
-          inner_link_href = inner_link['href']
-          assert(get_uri(inner_link_href))
-          related_links_page = get_uri(inner_link_href)            
+        inner_link_href = inner_link['href']
+        buff_page = get_uri(inner_link_href)
+        if buff_page
+          related_links_page = buff_page            
           no_of_occurences = inner_link_href.include?(link_host) ? 1 : related_links_page.xpath('count(//*[contains(text(), "'+@search_item+'")])').to_i
-          #print  "Occ:  #{no_of_occurences}\n"
           page_quality = page_quality + no_of_occurences
-        rescue Exception => error
-          log_exception false, true
         end
       end
     end
@@ -121,11 +116,7 @@ class Preprocessor
     end    
     page_quality
   end
-  
-  def assert(value, message="Assertion failed")
-    raise Exception, message, caller unless value
-  end
-  
+    
   def gen_scanners
     @scanners = []
     buff = Scanner.new
@@ -149,5 +140,9 @@ class Preprocessor
     buff.iteration = @iteration
     @scanners << buff
   end
+  
+  def assert(value, message="Assertion failed")
+    raise Exception, message, caller unless value
+  end  
 
 end # end class

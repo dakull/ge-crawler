@@ -1,11 +1,15 @@
-# CONTEXT :search_terms, :iterations, :algorithm, :result, :current_pop, :prev_pop, :probability_of_crossover
-# Algorithm 1st version GE_MARK_I : 
+# CONTEXT :search_terms, :iterations, :algorithm, 
+#         :result, :current_pop, :prev_pop, 
+#         :probability_of_crossover
+#
+# GE_MARK_I
+# 
 def ge_mark_i
   lambda do |context|
     for i in 1..context.iterations do
       # heuristic creation 
       prep = Preprocessor.new context.search_terms, i, 10
-      population = prep.start_preprocessor      
+      population = prep.start_preprocessor
            
       if i == 1 
         context.prev_pop = population
@@ -56,31 +60,32 @@ def ge_mark_i
         end
         # end crossover
         
-        # sort the array of individuals
-        population.sort! do |a,b|
-          a.page_quality <=> b.page_quality
-        end
-        
-        context.prev_pop = population.last 10
+        # prev_pop
+        context.prev_pop = population
       end
-      
-      # uniq again
+              
+      # uniq
       population = population.inject([]) do |hash,item|
-        flag = false
-        hash.each { |hash_item| flag = (hash_item.uri == item.uri) ? true : false }
-        hash << item unless flag
+        uniq = true
+        hash.each { |hash_item| uniq = (hash_item.uri == item.uri) ? false : true ; break unless uniq }
+        hash << item if uniq
         hash
       end
       
+      # sort the array of individuals
+      population.sort! do |a,b|
+        a.page_quality <=> b.page_quality
+      end
+            
       # sort and limit at 10
       population = population.last 10
       population.each do |res|
-        puts "#{res.page_quality} | LINK: #{res.uri}"
+        puts "| FPQ: #{res.page_quality} | LINK: #{res.uri}"
         context.result << { "pq" => res.page_quality, "link" => res.uri }
       end
-      
+            
       puts "----------------------------------------------------------------------"
-      puts "Population no #{i} Quality : #{(population.first.page_quality + population.last.page_quality)/2}"
+      puts "Population no #{i} Quality : #{(Float(population.first.page_quality + population.last.page_quality)/2)}"
       puts "----------------------------------------------------------------------"
       
       context.result_pop << {"pop_no" => i, "pop_q" => (population.first.page_quality + population.last.page_quality)/2}
