@@ -1,0 +1,61 @@
+1308905926
+Chromosome	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/chromosome.rb	class Chromosome
+Chromosome	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	class Chromosome
+CustomLogger	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/customlogger/customlogger.rb	module CustomLogger 
+Database	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/database/database_configuration.rb	module Database
+Database	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/database/job.rb	module Database
+GeneticAlgorithm	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	class GeneticAlgorithm
+Job	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/database/job.rb	  class Job 
+Postrocessor	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor.rb	class Postrocessor
+PostrocessorMutation	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor_mutation.rb	class PostrocessorMutation
+Preprocessor	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/preprocessor.rb	class Preprocessor
+Scanner	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	class Scanner
+UriIO	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/uriio/uriio.rb	module UriIO
+algorithm	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+all_links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/chromosome.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+all_links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+assert	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/preprocessor.rb	  def assert(value, message="Assertion failed")
+content	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/chromosome.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+content	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+current_pop	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+first_parent	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor.rb	  attr_accessor :first_parent, :second_parent, :search_item
+ge_mark_i	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithms.rb	def ge_mark_i
+gen_chromosome	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor_mutation.rb	  def gen_chromosome   
+gen_offspring	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor.rb	  def gen_offspring
+gen_page_quality	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/preprocessor.rb	  def gen_page_quality(related_links,link_host)
+gen_scanners	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/preprocessor.rb	  def gen_scanners
+get_results	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	  def get_results
+get_uri	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/uriio/uriio.rb	  def get_uri(uri_link)
+get_uri_host	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/uriio/uriio.rb	  def get_uri_host( the_uri )
+initialize	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  def initialize(search_terms,iterations,&algorithm)
+initialize	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor.rb	  def initialize(first_parent,second_parent,search_item)
+initialize	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor_mutation.rb	  def initialize(le_link)
+initialize	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/preprocessor.rb	  def initialize( search_item = "none", iteration = 1, pop_size = 10 )
+initialize	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	  def initialize( iteration = 1 )
+iteration	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	  attr_accessor :uri_address, :page_algorithm, :selector, :search_items, :iteration
+iterations	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+le_link	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor_mutation.rb	  attr_accessor :le_link
+links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/chromosome.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+log_exception	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/customlogger/customlogger.rb	  def log_exception( show_gem_list = false, show_backtrace = false ) 
+make_absolute	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/uriio/uriio.rb	  def make_absolute( href, root )
+page_algorithm	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	  attr_accessor :uri_address, :page_algorithm, :selector, :search_items, :iteration
+page_quality	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/chromosome.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+page_quality	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+prev_pop	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+probability_of_crossover	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+probability_of_mutation	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+relevant_links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/chromosome.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+relevant_links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+result	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+result_pop	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+run_algorithm	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  def run_algorithm
+search_item	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor.rb	  attr_accessor :first_parent, :second_parent, :search_item
+search_items	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	  attr_accessor :uri_address, :page_algorithm, :selector, :search_items, :iteration
+search_terms	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/genetic_algorithm.rb	  attr_accessor :search_terms, :iterations, :algorithm, :result_pop, :result, :current_pop, :prev_pop, :probability_of_crossover, :probability_of_mutation
+second_parent	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/postprocessor.rb	  attr_accessor :first_parent, :second_parent, :search_item
+selector	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	  attr_accessor :uri_address, :page_algorithm, :selector, :search_items, :iteration
+start_preprocessor	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/preprocessor.rb	  def start_preprocessor
+uri	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/chromosome.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+uri	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+uri_address	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/lib/scanner.rb	  attr_accessor :uri_address, :page_algorithm, :selector, :search_items, :iteration

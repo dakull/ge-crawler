@@ -1,3 +1,5 @@
+require 'uri'
+
 class Scanner
   
   attr_accessor :uri_address, :page_algorithm, :selector, :search_items, :iteration
@@ -8,10 +10,10 @@ class Scanner
   
   def get_results
     if @iteration == 1 
-      @uri_address.to_s + @search_items.to_s
+      URI.escape(@uri_address.to_s + @search_items.to_s)
     elsif @iteration > 1
       paging_code = @page_algorithm.call(self)
-      @uri_address.to_s + @search_items.to_s + paging_code
+      URI.escape(@uri_address.to_s + @search_items.to_s + paging_code)
     end
   end
   

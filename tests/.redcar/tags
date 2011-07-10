@@ -1,0 +1,8 @@
+1308904199
+Chromosome	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	class Chromosome
+all_links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+content	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+page_quality	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+relevant_links	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links
+uri	D:/WORK/_dropbox_cache/My Dropbox/Fak/_dis/_src/core/tests/uniq.rb	  attr_accessor :uri, :page_quality, :content, :relevant_links, :links, :all_links

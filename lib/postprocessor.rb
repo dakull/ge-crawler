@@ -98,7 +98,7 @@ class Postrocessor
           offspring = Chromosome.new
           offspring.uri = link_uri
           offspring.page_quality = page_quality
-          offspring.content = doc_child
+          #offspring.content = doc_child
           offspring.relevant_links = relevant_links
           offspring.links = doc_child.xpath('count(//a)')
       end

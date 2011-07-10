@@ -26,8 +26,17 @@ class Preprocessor
       puts "*** SEARCH URI: #{scanner.get_results}"
       doc = get_uri(scanner.get_results)
       
-      doc.css(scanner.selector).each do |link|
-        links_to_scan << link['href']
+      no_of_retries = 0
+      begin      
+        doc.css(scanner.selector).each do |link|
+          links_to_scan << link['href']
+        end
+      rescue Exception => error
+        log_exception
+        puts "*** SEARCH URI ERROR: #{scanner.get_results}"
+        sleep 1
+        no_of_retries += 1
+        no_of_retries == 10 ? nil : retry
       end
     end
 
@@ -54,7 +63,7 @@ class Preprocessor
           c = Chromosome.new
           c.uri = link
           c.page_quality = page_quality
-          c.content = doc_child
+          #c.content = doc_child
           c.relevant_links = related_links
           c.links = doc_child.xpath('count(//a)')
           c.all_links = doc_child.xpath('//a')

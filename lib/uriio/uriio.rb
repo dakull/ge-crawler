@@ -15,14 +15,24 @@ module UriIO
   end
   
   def make_absolute( href, root )
-    uri = URI.parse(href)
-    uri = URI.parse(root).merge(href) if uri.relative?
-    uri.to_s
+    begin
+      uri = URI.parse(href)
+      uri = URI.parse(root).merge(href) if uri.relative?
+      uri.to_s
+    rescue Exception => error
+      log_exception
+      nil
+    end    
   end
   
   def get_uri_host( the_uri )
-    uri = URI.parse(the_uri)
-    uri.host
+    begin    
+      uri = URI.parse(the_uri)
+      uri.host
+    rescue Exception => error
+      log_exception
+      nil
+    end
   end
   
 end

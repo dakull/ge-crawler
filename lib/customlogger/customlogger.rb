@@ -1,5 +1,4 @@
-module CustomLogger
-  
+module CustomLogger  
   def log_exception( show_gem_list = false, show_backtrace = false ) 
     open('crash.log', 'a') do |log|
       error = {
@@ -11,5 +10,4 @@ module CustomLogger
       YAML.dump(error,  log)      
     end
   end
-  
 end
