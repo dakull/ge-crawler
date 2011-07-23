@@ -88,21 +88,6 @@ class Preprocessor
     end
     
     results
-    
-    # dc exista deja in queue
-    # fix that error
-    # ActiveRecord::Base.connection.reconnect!
-    # if Job.where('name = ? AND status = ?', $search_item, 1).exists? then
-    #   return -1
-    # end
-        
-    # jobul este gata save the data
-    # jobul a inceput
-    # job = Job.find_by_name(@search_item)      
-    # ATENTIE !
-    # job.status = 1
-    # job.result = results
-    # job.save
   end
   
   def gen_page_quality(related_links,link_host)

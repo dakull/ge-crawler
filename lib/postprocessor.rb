@@ -55,23 +55,11 @@ class Postrocessor
       puts "cutpoint: #{cut_point}"
       puts "le_links_first_parent #{le_links_first_parent.count}"
       puts "le_links_second_parent #{le_links_second_parent.count}"
-      #combined_links =  le_links_first_parent[0,cut_point-1] |
-      #                  le_links_second_parent[cut_point-1,le_links_second_parent.count-1]
-      combined_links = le_links_first_parent | le_links_second_parent
+      combined_links =  le_links_first_parent[0,cut_point-1] |
+                        le_links_second_parent[cut_point-1,le_links_second_parent.count-1]
+      #combined_links = le_links_first_parent | le_links_second_parent
       
-      link_uri = nil
-      #times = 0
-      #while times < combined_links.count || link_uri == nil || link_uri.include?('https') || link_uri.include?('mailto')
-      #  link_uri = combined_links[rand(combined_links.count)-1]
-      #  times += 1
-      #end
-      
-      #for i in 1..combined_links.count
-      #  if times < combined_links.count || link_uri == nil || link_uri.include?('https') || link_uri.include?('mailto')
-      #    link_uri = combined_links[rand(combined_links.count)-1]
-      #  end
-      #end
-      
+      link_uri = nil      
       link_uri = combined_links[rand(combined_links.count-1)]
       
       #start to generate offspring

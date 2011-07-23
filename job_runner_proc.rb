@@ -39,7 +39,13 @@ loop do
           # time to run
           beginning_time = Time.now
           # init algo
-          ga_buff = GeneticAlgorithm.new job.name, job.settings[:iterations], &ge_mark_i
+          # select algo
+          if (job.settings[:algo] == 1)
+            ga_buff = GeneticAlgorithm.new job.name, job.settings[:iterations], &ge_mark_i
+          else
+            ga_buff = GeneticAlgorithm.new job.name, job.settings[:iterations], &ge_mark_ii  
+          end
+          # set basic stuff
           ga_buff.probability_of_crossover = Float(job.settings[:crossover_p])
           ga_buff.probability_of_mutation = Float(job.settings[:mutation_p])
           ga_buff.job = job

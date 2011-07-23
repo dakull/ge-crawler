@@ -45,12 +45,17 @@ def ge_mark_i
         unless selected_offsprings.count % 2 == 0
           selected_offsprings = selected_offsprings.drop 1
         end
+        # limit no of offs to 20
+        if selected_offsprings.count > 20 
+          selected_offsprings = selected_offsprings.first 20
+        end
         
         # offsprings are being made here   
         offspring, prev_individual, buff  = nil, nil, 0
+        puts "NO of selected OFF: #{selected_offsprings.length}"
         selected_offsprings.each do |individual|
           buff += 1
-          prev_individual = individual
+          prev_individual = individual if buff == 1
           if buff == 2 
             pp = Postrocessor.new(prev_individual, individual, context.search_terms)
             offspring = pp.gen_offspring
@@ -58,7 +63,7 @@ def ge_mark_i
               population << offspring
             end
             buff = 0
-            individual = nil
+            prev_individual = nil
           end
         end
         # end crossover
@@ -117,6 +122,7 @@ end
 def ge_mark_ii
   lambda do |context|
     for i in 1..context.iterations do
+      context.job.reload
       # heuristic creation 
       prep = Preprocessor.new context.search_terms, i, 10
       population = prep.start_preprocessor
@@ -133,16 +139,18 @@ def ge_mark_ii
         selected_offsprings = []
         population.each do |individual|
           # select for crossover
+          puts "CROSSOVER: #{rand} #{context.probability_of_crossover}"
           if rand < context.probability_of_crossover
             selected_offsprings << individual
           end
           # select and mutate
-          rand = 10 # remove this
-          if rand < context.probability_of_mutation
-            puts "Making mutation in link"
+          puts "MUTATE: #{rand} #{context.probability_of_mutation}"
+          if (rand < context.probability_of_mutation && individual.all_links != nil)
+            puts "MUTATE: Making mutation in link"
             random_link = individual.all_links[rand(individual.all_links.length)]
-            mutated_link = PostrocessorMutation.new random_link
-            unless offspring == nil
+            pm = PostrocessorMutation.new(random_link, context.search_terms)
+            mutated_link = pm.gen_mutated_link
+            unless mutated_link == nil
               population << mutated_link
             end
           end
@@ -152,12 +160,17 @@ def ge_mark_ii
         unless selected_offsprings.count % 2 == 0
           selected_offsprings = selected_offsprings.drop 1
         end
+        # limit no of offs to 20
+        if selected_offsprings.count > 20 
+          selected_offsprings = selected_offsprings.first 20
+        end
         
         # offsprings are being made here   
         offspring, prev_individual, buff  = nil, nil, 0
+        puts "NO of selected OFF: #{selected_offsprings.length}"
         selected_offsprings.each do |individual|
           buff += 1
-          prev_individual = individual
+          prev_individual = individual if buff == 1
           if buff == 2 
             pp = Postrocessor.new(prev_individual, individual, context.search_terms)
             offspring = pp.gen_offspring
@@ -165,7 +178,7 @@ def ge_mark_ii
               population << offspring
             end
             buff = 0
-            individual = nil
+            prev_individual = nil
           end
         end
         # end crossover
@@ -187,8 +200,22 @@ def ge_mark_ii
         a.page_quality <=> b.page_quality
       end
             
+      # random select based on page quality
+      post_population = []
+      population.each do |res|
+        pgi = rand(res.page_quality)
+        post_population << res if pgi < res.page_quality
+        puts "Weighted RANDOM #{pgi} #{res.page_quality}"
+      end
+      
+      # check if pop size > 0
+      if post_population.length > 0 
+        # Weighted RANDOM Pop becomes new population
+        population = post_population  
+      end
+      
       # sort and limit at 10
-      population = population.last 10
+      population = population.last 10 if population.length > 10
       population.each do |res|
         puts "| FPQ: #{res.page_quality} | LINK: #{res.uri}"
         context.result << { :pq => res.page_quality, :link => res.uri, :iteration => i }
@@ -206,6 +233,10 @@ def ge_mark_ii
                      :populations => context.result_pop
                    }
       context.job.save
-    end
-  end
+      # break job
+      if context.job.status != 2 
+        break
+      end
+    end # for
+  end 
 end
