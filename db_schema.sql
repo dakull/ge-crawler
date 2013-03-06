@@ -1,0 +1,11 @@
+CREATE DATABASE runners;
+
+CREATE TABLE `runners`.`jobs` (
+`id` INT( 5 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`name` VARCHAR( 255 ) NOT NULL ,
+`status` INT NOT NULL ,
+`result` LONGTEXT NULL ,
+UNIQUE (
+`name`
+)
+) ENGINE = MYISAM ;

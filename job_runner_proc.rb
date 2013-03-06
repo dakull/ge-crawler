@@ -24,7 +24,7 @@ loop do
   #puts "In loop: #{(counter += 1).to_s} NO of procs: #{no_of_running_procs}"
   begin
     # reconnect
-    # fork net. conn. are in an inconsistent state    
+    # fork net. conn. are in an inconsistent state
     ActiveRecord::Base.connection.reconnect!
     jobs = Database::Job.find_all_by_status(0)
     jobs.each do |job,index|
@@ -35,7 +35,7 @@ loop do
           # reconnect
           # fork net. conn. are in an inconsistent state
           ActiveRecord::Base.connection.reconnect!
-          puts "Processing job: #{job.name} and no of procs #{no_of_running_procs}" 
+          puts "Processing job: #{job.name} and no of procs #{no_of_running_procs}"
           # time to run
           beginning_time = Time.now
           # init algo
@@ -43,7 +43,7 @@ loop do
           if (job.settings[:algo] == 1)
             ga_buff = GeneticAlgorithm.new job.name, job.settings[:iterations], &ge_mark_i
           else
-            ga_buff = GeneticAlgorithm.new job.name, job.settings[:iterations], &ge_mark_ii  
+            ga_buff = GeneticAlgorithm.new job.name, job.settings[:iterations], &ge_mark_ii
           end
           # set basic stuff
           ga_buff.probability_of_crossover = Float(job.settings[:crossover_p])
@@ -52,15 +52,15 @@ loop do
           # put job in processing mode
           job.result = nil
           job.status = 2
-          job.save    
+          job.save
           ga_buff.run_algorithm
           # job done
           end_time = Time.now
           # save results
           job.result = {
-                         :links => ga_buff.result, 
-                         :populations => ga_buff.result_pop, 
-                         :time_to_run => (end_time - beginning_time) 
+                         :links => ga_buff.result,
+                         :populations => ga_buff.result_pop,
+                         :time_to_run => (end_time - beginning_time)
                        }
           job.status = 1
           job.save
@@ -74,7 +74,7 @@ loop do
         puts "Child pid #{pid}: terminated no of procs #{no_of_running_procs}"
       }
     end # block
-    
+
     # wait to finish
     # Process.wait(0)
   rescue => error
